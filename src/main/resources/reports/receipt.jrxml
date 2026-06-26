@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport
+    xmlns="http://jasperreports.sourceforge.net/jasperreports"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+    name="ProfessionalReceipt"
+    pageWidth="300"
+    pageHeight="650"
+    columnWidth="260"
+    leftMargin="20"
+    rightMargin="20"
+    topMargin="20"
+    bottomMargin="20"
+    uuid="550e8400-e29b-41d4-a716-446655440000">
+
+    <!-- ═══════════════════════════════════════════════════════
+         PARAMETERS  (order-level data passed via HashMap)
+         These are filled in ReceiptGenerator.java via params map.
+         ═══════════════════════════════════════════════════════ -->
+    <parameter name="orderId"      class="java.lang.Integer"/>
+    <parameter name="customerName" class="java.lang.String"/>
+    <parameter name="orderDate"    class="java.lang.String"/>
+    <parameter name="total"        class="java.lang.Double"/>
+    <parameter name="address"      class="java.lang.String"/>
+    <parameter name="phone"        class="java.lang.String"/>
+
+    <!-- ═══════════════════════════════════════════════════════
+         FIELDS  (item-level data from XML via JRXmlDataSource)
+         XPath:  /Order/Items/Item
+         fieldDescription tells JasperReports the exact XML
+         element name to read (case-sensitive XPath match).
+         ═══════════════════════════════════════════════════════ -->
+    <field name="productName" class="java.lang.String">
+        <fieldDescription><![CDATA[ProductName]]></fieldDescription>
+    </field>
+    <field name="quantity" class="java.lang.String">
+        <fieldDescription><![CDATA[Quantity]]></fieldDescription>
+    </field>
+    <field name="productPrice" class="java.lang.String">
+        <fieldDescription><![CDATA[Price]]></fieldDescription>
+    </field>
+
+    <!-- ═══════════════════════════════════════════════════════
+         TITLE BAND  (printed once at the top)
+         Added address + phone rows; height increased to 190.
+         ═══════════════════════════════════════════════════════ -->
+    <title>
+        <band height="190">
+
+            <!-- Store name -->
+            <staticText>
+                <reportElement x="0" y="0" width="260" height="25"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle">
+                    <font size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[CØDE LØCK]]></text>
+            </staticText>
+
+            <!-- Store address (static) -->
+            <staticText>
+                <reportElement x="0" y="25" width="260" height="15"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[Taguig City, Metro Manila]]></text>
+            </staticText>
+
+            <!-- Store contact (static) -->
+            <staticText>
+                <reportElement x="0" y="40" width="260" height="15"/>
+                <textElement textAlignment="Center"/>
+                <text><![CDATA[Contact: (02) 8123-4567]]></text>
+            </staticText>
+
+            <!-- Divider -->
+            <line>
+                <reportElement x="0" y="60" width="260" height="1"/>
+                <graphicElement><pen lineStyle="Dashed"/></graphicElement>
+            </line>
+
+            <!-- Receipt # -->
+            <staticText>
+                <reportElement x="0" y="70" width="80" height="15"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Receipt #:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="70" width="180" height="15"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{orderId}]]></textFieldExpression>
+            </textField>
+
+            <!-- Date -->
+            <staticText>
+                <reportElement x="0" y="88" width="80" height="15"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Date:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="88" width="180" height="15"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{orderDate}]]></textFieldExpression>
+            </textField>
+
+            <!-- Customer -->
+            <staticText>
+                <reportElement x="0" y="106" width="80" height="15"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Customer:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="80" y="106" width="180" height="15"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{customerName}]]></textFieldExpression>
+            </textField>
+
+            <!-- ── NEW: Address ── -->
+            <staticText>
+                <reportElement x="0" y="124" width="80" height="15"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Address:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="80" y="124" width="180" height="15"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{address}]]></textFieldExpression>
+            </textField>
+
+            <!-- ── NEW: Phone / GCash ── -->
+            <staticText>
+                <reportElement x="0" y="142" width="80" height="15"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Phone / GCash:]]></text>
+            </staticText>
+            <textField isBlankWhenNull="true">
+                <reportElement x="80" y="142" width="180" height="15"/>
+                <textElement textAlignment="Right"/>
+                <textFieldExpression><![CDATA[$P{phone}]]></textFieldExpression>
+            </textField>
+
+            <!-- Bottom divider of header section -->
+            <line>
+                <reportElement x="0" y="165" width="260" height="1"/>
+                <graphicElement><pen lineStyle="Dashed"/></graphicElement>
+            </line>
+
+        </band>
+    </title>
+
+    <!-- ═══════════════════════════════════════════════════════
+         COLUMN HEADER  (item table headings)
+         ═══════════════════════════════════════════════════════ -->
+    <columnHeader>
+        <band height="20">
+            <staticText>
+                <reportElement x="0" y="0" width="130" height="15"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[DESCRIPTION]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="130" y="0" width="40" height="15"/>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[QTY]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="170" y="0" width="90" height="15"/>
+                <textElement textAlignment="Right"><font isBold="true"/></textElement>
+                <text><![CDATA[AMOUNT]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+
+    <!-- ═══════════════════════════════════════════════════════
+         DETAIL BAND  (one row per <Item> in the XML)
+         productPrice comes from XML as String → parsed to Double.
+         ═══════════════════════════════════════════════════════ -->
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="130" height="15"/>
+                <textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="130" y="0" width="40" height="15"/>
+                <textElement textAlignment="Center"/>
+                <textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="170" y="0" width="90" height="15"/>
+                <textElement textAlignment="Right"/>
+                <!-- Parse the XML string value to Double for formatting -->
+                <textFieldExpression><![CDATA["₱" + String.format("%.2f", Double.parseDouble($F{productPrice}))]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SUMMARY  (total + footer, printed once at the bottom)
+         ═══════════════════════════════════════════════════════ -->
+    <summary>
+        <band height="90">
+            <line>
+                <reportElement x="0" y="5" width="260" height="1"/>
+                <graphicElement><pen lineStyle="Dashed"/></graphicElement>
+            </line>
+
+            <staticText>
+                <reportElement x="90" y="15" width="80" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <text><![CDATA[TOTAL:]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="170" y="15" width="90" height="20"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font size="12" isBold="true"/>
+                </textElement>
+                <textFieldExpression><![CDATA["₱" + String.format("%.2f", $P{total})]]></textFieldExpression>
+            </textField>
+
+            <staticText>
+                <reportElement x="0" y="50" width="260" height="15"/>
+                <textElement textAlignment="Center"><font isBold="true"/></textElement>
+                <text><![CDATA[Thank you for your purchase!]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="0" y="65" width="260" height="15"/>
+                <textElement textAlignment="Center"><font size="8"/></textElement>
+                <text><![CDATA[Please keep this receipt for your records.]]></text>
+            </staticText>
+        </band>
+    </summary>
+
+</jasperReport>
