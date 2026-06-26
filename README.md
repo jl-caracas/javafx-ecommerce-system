@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🛒 CØDE LØCK E-Commerce App
 
 A full-featured **JavaFX Desktop E-Commerce Application** built with **Maven**, **SQLite**, and **JasperReports**. Originally developed as an OOP project, it now includes a modern admin dashboard, product variant system, bcrypt password security, and PDF receipt generation.
@@ -158,3 +159,7 @@ user_cart        (user_id, variant_id, quantity)
 ## 📝 License
 
 This project was created as a college OOP course project. Free to use and modify for educational purposes.
+=======
+# javafx-ecommerce-system
+A JavaFX desktop e-commerce app built with Maven, SQLite, and JasperReports. Features product catalog with variant selection, shopping cart, admin panel for product &amp; order management, analytics dashboard, bcrypt password security, and automated PDF receipt generation.
+>>>>>>> 23ff5d17c78ee573e1f68ef6333d903c2ec1097c
